@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class MainMenu {
     public static void main(String[] args) {
@@ -14,8 +15,25 @@ public class MainMenu {
             System.out.println("5. Show all student information");
             System.out.println("0. quit");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = -1;
+            boolean isValidInput = false;
+
+            while (!isValidInput) {
+                try {
+                    choice = scanner.nextInt();
+                    if (choice >= 0 && choice <= 5) {
+                        isValidInput = true;
+                    } else {
+                        System.out.println("Invalid operation! Please enter BETWEEN 0 AND 5."); // Emphasizes that the user must input a number
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a NUMBER between 0 and 5."); // Prompts the user to enter a number within the 0-5 range
+                } finally {
+                    scanner.nextLine(); // Clear the contents of the buffer / 清除缓冲区的内容
+                }
+            }
+            /*int choice = scanner.nextInt();
+            scanner.nextLine();*/
 
             //Select action
             switch (choice) {
@@ -83,9 +101,9 @@ public class MainMenu {
                     System.exit(0);
                     break;
 
-                default:
-                    System.out.println("Invalid operation！");
-                    break;
+                /*default:
+                    System.out.println("Invalid operation! Please enter a number between 0 and 5.");
+                    break;*/
             }
         }
     }
