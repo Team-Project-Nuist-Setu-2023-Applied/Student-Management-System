@@ -39,7 +39,7 @@ public class MainMenu {
             switch (choice) {
                 //Add student information
                 case 1:
-                    System.out.print("Please enter student name：");
+                    /*System.out.print("Please enter student name：");
                     String name = scanner.nextLine();
                     System.out.print("Please enter student age：");
                     int age = scanner.nextInt();
@@ -47,7 +47,12 @@ public class MainMenu {
                     System.out.print("Please enter student gender：");
                     String gender = scanner.nextLine();
                     System.out.print("Please enter student ID：");
-                    String studentID = scanner.nextLine();
+                    String studentID = scanner.nextLine();*/
+                    String name = inputName(scanner);
+                    int age = inputAge(scanner);
+                    String gender = inputGender(scanner);
+                    String studentID = inputStudentID(scanner);
+
 
                     Student student = new Student(name, age, gender, studentID);
                     manager.addStudent(student);
@@ -107,4 +112,54 @@ public class MainMenu {
             }
         }
     }
+
+    private static String inputName(Scanner scanner) {
+        while (true) {
+            System.out.print("Please enter student name：");
+            String name = scanner.nextLine();
+            if (!name.isEmpty() && name.length() <= 20) {
+                return name;
+            }
+            System.out.println("Invalid name. Please try again.");
+        }
+    }
+
+    private static int inputAge(Scanner scanner) {
+        while (true) {
+            System.out.print("Please enter student age：");
+            if (scanner.hasNextInt()) {
+                int age = scanner.nextInt();
+                scanner.nextLine(); // Clear newline characters / 清除换行符
+                if (age > 5 && age <= 100) {
+                    return age;
+                }
+            } else {
+                scanner.nextLine(); // Clear invalid input / 清除无效输入
+            }
+            System.out.println("Invalid age. Please enter a number between 6 and 100.");
+        }
+    }
+
+    private static String inputGender(Scanner scanner) {
+        while (true) {
+            System.out.print("Please enter student gender (Male/Female)：");
+            String gender = scanner.nextLine();
+            if (gender.equalsIgnoreCase("Male") || gender.equalsIgnoreCase("Female")) {
+                return gender;
+            }
+            System.out.println("Invalid gender. Please enter 'Male' or 'Female'.");
+        }
+    }
+
+    private static String inputStudentID(Scanner scanner) {
+        while (true) {
+            System.out.print("Please enter student ID：");
+            String studentID = scanner.nextLine();
+            if (!studentID.isEmpty()) {
+                return studentID;
+            }
+            System.out.println("It's empty. Please enter student ID again.");
+        }
+    }
+
 }
