@@ -53,5 +53,16 @@ class StudentManager {
             System.out.println();
         }
     }
+
+    public List<Student> searchStudents(String keyword) {
+        List<Student> foundStudents = new ArrayList<>();
+        for (Student student : students) {
+            if (student.getName().toLowerCase().contains(keyword.toLowerCase())
+                    || student.getStudentID().contains(keyword)) {
+                foundStudents.add(student);
+            }
+        }
+        return foundStudents;
+    }
 }
 

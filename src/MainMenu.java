@@ -1,6 +1,6 @@
 import java.util.Scanner;
 import java.util.InputMismatchException;
-
+import java.util.List;
 public class MainMenu {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -13,7 +13,9 @@ public class MainMenu {
             System.out.println("3. Update student information");
             System.out.println("4. Delete students");
             System.out.println("5. Show all student information");
+            System.out.println("6. Search students");
             System.out.println("0. quit");
+            System.out.println("Please enter your choice: ");
 
             int choice = -1;
             boolean isValidInput = false;
@@ -21,13 +23,13 @@ public class MainMenu {
             while (!isValidInput) {
                 try {
                     choice = scanner.nextInt();
-                    if (choice >= 0 && choice <= 5) {
+                    if (choice >= 0 && choice <= 6) {
                         isValidInput = true;
                     } else {
-                        System.out.println("Invalid operation! Please enter BETWEEN 0 AND 5."); // Emphasizes that the user must input a number
+                        System.out.println("Invalid operation! Please enter BETWEEN 0 AND 6."); // Emphasizes that the user must input a number
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("Invalid input. Please enter a NUMBER between 0 and 5."); // Prompts the user to enter a number within the 0-5 range
+                    System.out.println("Invalid input. Please enter a NUMBER between 0 and 6."); // Prompts the user to enter a number within the 0-5 range
                 } finally {
                     scanner.nextLine(); // Clear the contents of the buffer / 清除缓冲区的内容
                 }
@@ -77,30 +79,39 @@ public class MainMenu {
                     studentID = scanner.nextLine();
                     foundStudent = manager.findStudentByID(studentID);
                     if (foundStudent != null) {
-                        System.out.print("Please enter new student name：");
-                        name = scanner.nextLine();
-                        System.out.print("Please enter new student age：");
-                        age = scanner.nextInt();
-                        scanner.nextLine();
-                        System.out.print("Please enter new student gender：");
-                        gender = scanner.nextLine();
+                        name = inputName(scanner);
+                        age = inputAge(scanner);
+                        gender = inputGender(scanner);
 
                         manager.updateStudent(studentID, name, age, gender);
                     } else {
-                        System.out.println("The student ID was not found and the information cannot be updated.。");
+                        System.out.println("The student ID was not found and the information cannot be updated.");
                     }
                     break;
-//Delete student information
                 case 4:
                     System.out.print("Please enter the student number to be deleted：");
                     studentID = scanner.nextLine();
                     manager.deleteStudent(studentID);
                     break;
-
                 case 5:
                     manager.displayStudents();
                     break;
-
+                case 6:
+                    System.out.print("Please enter a keyword for searching students：");
+                    String keyword = scanner.nextLine();
+                    List<Student> foundStudents = manager.searchStudents(keyword);
+                    if (foundStudents.isEmpty()) {
+                        System.out.println("No students found with the given keyword.");
+                    } else {
+                        for (Student searchResult : foundStudents) { // Rename variable to avoid conflict
+                            System.out.println("Name：" + searchResult.getName());
+                            System.out.println("Age：" + searchResult.getAge());
+                            System.out.println("Gender：" + searchResult.getGender());
+                            System.out.println("StudentID：" + searchResult.getStudentID());
+                            System.out.println();
+                        }
+                    }
+                    break;
                 case 0:
                     System.out.println("Program has exited。");
                     System.exit(0);
